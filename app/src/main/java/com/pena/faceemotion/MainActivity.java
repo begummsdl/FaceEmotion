@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements itemClickListener
     }
 
     private void registerEventHandlers() {
-        ifExistsImagePath();
         takePhoto();
         changeStatusBarColor();
     }
@@ -148,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements itemClickListener
     @Override
     protected void onResume() {
         super.onResume();
+        ifExistsImagePath();
         loadImages();
         loadFolders();
     }
