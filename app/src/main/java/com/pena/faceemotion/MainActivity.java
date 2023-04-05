@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pena.faceemotion.roomData.Emotion;
 import com.pena.faceemotion.roomData.EmotionDatabase;
 import com.pena.faceemotion.roomData.IEmotionDAO;
 import com.pena.faceemotion.utils.MarginDecoration;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements itemClickListener
     }
 
     private void registerEventHandlers() {
+        ifExistsImagePath();
         takePhoto();
         changeStatusBarColor();
     }
@@ -74,6 +77,29 @@ public class MainActivity extends AppCompatActivity implements itemClickListener
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+    }
+
+    private void ifExistsImagePath(){
+        for (String filePath : emotionDAO.loadImagePath()){
+            String[] projection = {MediaStore.Images.Media._ID};
+            String selection = MediaStore.Images.Media.DATA + "=?";
+            String[] selectionArgs = {filePath};
+
+            Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    projection, selection, selectionArgs, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                // Dosya MediaStore'da bulunuyor
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                // ID değeri kullanılarak dosyayı MediaStore'dan silmek için işlemler yapılabilir
+                cursor.close();
+            } else {
+                // Dosya MediaStore'da bulunmuyor
+                for (Emotion emotion:emotionDAO.loadEmotionByImagePath(filePath)){
+                    emotionDAO.deleteEmotion(emotion);
+                }
+            }
+        }
     }
 
     private ArrayList<imageFolder> getPicturePaths() {

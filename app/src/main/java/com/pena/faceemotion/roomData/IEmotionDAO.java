@@ -18,11 +18,14 @@ public interface IEmotionDAO {
     @Delete
     void deleteEmotion(Emotion emotion);
 
+    @Query("SELECT image_path FROM emotions")
+    List<String> loadImagePath();
+
     @Query("SELECT image_path FROM emotions WHERE label_name=:labelName")
     List<String> loadImagePathBylabel(String labelName);
 
-    @Query("SELECT label_name FROM emotions WHERE image_path=:imagePath")
-    List<String> loadLabelNameByImagePath(String imagePath);
+    @Query("SELECT * FROM emotions WHERE image_path=:imagePath")
+    List<Emotion> loadEmotionByImagePath(String imagePath);
 
     @Query("SELECT COUNT(*) FROM emotions WHERE label_name=:labelName AND image_path=:imagePath")
     int pathExists(String labelName,String imagePath);
