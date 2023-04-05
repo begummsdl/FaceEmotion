@@ -19,6 +19,7 @@ import com.pena.faceemotion.utils.pictureFacer;
 import com.pena.faceemotion.utils.picture_Adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ImageDisplay extends AppCompatActivity implements itemClickListener {
@@ -71,8 +72,9 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
         ArrayList<pictureFacer> images = new ArrayList<>();
         EmotionDatabase emotionDatabase = EmotionDatabase.getEmotionDatabase(this);
         IEmotionDAO emotionDAO = emotionDatabase.getEmotionDAO();
-
-        for (String imagePath : emotionDAO.loadImagePathBylabel(path)) {
+        List<String> imagePaths = emotionDAO.loadImagePathBylabel(path);
+        for (int i=imagePaths.size()-1; i>=0; i--) {
+            String imagePath = imagePaths.get(i);
             pictureFacer pic = new pictureFacer();
             pic.setPicturName(path);
             pic.setPicturePath(imagePath);

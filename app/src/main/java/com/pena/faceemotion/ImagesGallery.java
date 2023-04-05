@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
-import com.pena.faceemotion.ml.Mobilenetv2896;
+import com.pena.faceemotion.ml.Mobilenetv2893;
 import com.pena.faceemotion.roomData.Emotion;
 import com.pena.faceemotion.roomData.EmotionDatabase;
 import com.pena.faceemotion.roomData.IEmotionDAO;
@@ -97,7 +97,7 @@ public class ImagesGallery {
         EmotionDatabase emotionDatabase = EmotionDatabase.getEmotionDatabase(context);
         IEmotionDAO emotionDAO= emotionDatabase.getEmotionDAO();
         try {
-            Mobilenetv2896 model = Mobilenetv2896.newInstance(context);
+            Mobilenetv2893 model = Mobilenetv2893.newInstance(context);
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 75, 75, 3}, DataType.FLOAT32);
 
             Bitmap bitmap = Bitmap.createScaledBitmap(imageBitmap, 75,75,false);
@@ -117,7 +117,7 @@ public class ImagesGallery {
                 }
             }
             inputFeature0.loadBuffer(byteBuffer);
-            Mobilenetv2896.Outputs outputs = model.process(inputFeature0);
+            Mobilenetv2893.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();

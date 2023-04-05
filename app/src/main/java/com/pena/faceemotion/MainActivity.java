@@ -81,12 +81,12 @@ public class MainActivity extends AppCompatActivity implements itemClickListener
         ArrayList<String> picPaths = new ArrayList<>();
         String[] classes = {"Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"};
 
-        for (int i = 6; i >= 0; i--) {
+        for (int i = 0; i < 7; i++) {
             for (String x : emotionDAO.loadImagePathBylabel(classes[i])) {
                 imageFolder folds = new imageFolder();
                 String folder = classes[i];
                 List<String> datapaths = emotionDAO.loadImagePathBylabel(classes[i]);
-                String datapath = datapaths.get(0);
+                String datapath = datapaths.get(datapaths.size() - 1);
                 if (!picPaths.contains(classes[i])) {
                     picPaths.add(classes[i]);
                     folds.setPath(classes[i]);
